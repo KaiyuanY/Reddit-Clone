@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test-db
+    username: admin
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 71b6b1f2f67f3a
+    password: 8cc1b4cb9acbb1
+    protocol: smtp
+    tls: yes
+jwt:
+  expiration:
+    time: 900000
+  public:
+    key: classpath:app.pub
+## This is strictly for demo purpose only,
+# DO NOT define the private key in the repository like this in your personal projects
+  private:
+    key: classpath:app.key
+server:
+  port: 8080
