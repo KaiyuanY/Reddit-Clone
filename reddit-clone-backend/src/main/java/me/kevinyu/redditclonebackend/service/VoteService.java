@@ -11,6 +11,7 @@ import me.kevinyu.redditclonebackend.model.VoteType;
 import me.kevinyu.redditclonebackend.repository.PostRepository;
 import me.kevinyu.redditclonebackend.repository.VoteRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class VoteService {
     private final AuthService authService;
     private final VoteMapper voteMapper;
 
+    @Transactional
     public void vote(VoteDto voteDto){
         Post post = postRepository.findById(voteDto.getPostId())
                 .orElseThrow(() -> new PostNotFoundException("Post not found with ID - " + voteDto.getPostId()));

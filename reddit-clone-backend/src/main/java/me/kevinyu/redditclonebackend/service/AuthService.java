@@ -3,6 +3,7 @@ package me.kevinyu.redditclonebackend.service;
 import lombok.AllArgsConstructor;
 import me.kevinyu.redditclonebackend.dto.AuthenticationResponse;
 import me.kevinyu.redditclonebackend.dto.LoginRequest;
+import me.kevinyu.redditclonebackend.dto.RefreshTokenRequest;
 import me.kevinyu.redditclonebackend.dto.RegisterRequest;
 import me.kevinyu.redditclonebackend.exception.RedditException;
 import me.kevinyu.redditclonebackend.model.NotificationEmail;
@@ -113,4 +114,17 @@ public class AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest){
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
+                .build();
+    }
+
+
 }
